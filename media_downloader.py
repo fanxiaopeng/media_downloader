@@ -197,6 +197,8 @@ async def download_media(
                         logger.info("Media downloaded - %s", download_path)
                         bp.upload(download_path)
                         logger.info("Media uploaded - %s", download_path)
+                        os.remove(download_path)
+                        logger.info("Media deleted - %s", download_path)
 
                     DOWNLOADED_IDS.append(message.id)
             break
