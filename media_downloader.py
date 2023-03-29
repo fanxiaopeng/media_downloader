@@ -198,11 +198,13 @@ async def download_media(
                         )
                     if download_path:
                         logger.info("Media downloaded - %s", download_path)
-                        change_file_md5(download_path)
-                        bp.upload(download_path)
-                        logger.info("Media uploaded - %s", download_path)
-                        os.remove(download_path)
-                        logger.info("Media deleted - %s", download_path)
+                        file_size = os.path.getsize('/Users/yangting/Downloads/baiduyun-download/IMG_5259.MP4')
+                        if file_size>2*1024*1024:
+                            change_file_md5(download_path)
+                            bp.upload(download_path)
+                            logger.info("Media uploaded - %s", download_path)
+                            os.remove(download_path)
+                            logger.info("Media deleted - %s", download_path)
 
                     DOWNLOADED_IDS.append(message.id)
             break
