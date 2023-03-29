@@ -30,6 +30,9 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 FAILED_IDS: list = []
 DOWNLOADED_IDS: list = []
 
+def change_file_md5(file_path):
+    with open(file_path, 'a') as f:
+        f.write(' ')
 
 def update_config(config: dict):
     """
@@ -195,6 +198,7 @@ async def download_media(
                         )
                     if download_path:
                         logger.info("Media downloaded - %s", download_path)
+                        change_file_md5(download_path)
                         bp.upload(download_path)
                         logger.info("Media uploaded - %s", download_path)
                         os.remove(download_path)
