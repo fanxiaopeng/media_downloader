@@ -2,6 +2,7 @@
 import asyncio
 import logging
 import os
+from bypy import ByPy
 from typing import List, Optional, Tuple, Union
 
 import pyrogram
@@ -23,6 +24,7 @@ logging.basicConfig(
 logging.getLogger("pyrogram.session.session").addFilter(LogFilter())
 logging.getLogger("pyrogram.client").addFilter(LogFilter())
 logger = logging.getLogger("media_downloader")
+bp=ByPy()
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 FAILED_IDS: list = []
@@ -193,6 +195,9 @@ async def download_media(
                         )
                     if download_path:
                         logger.info("Media downloaded - %s", download_path)
+                        bp.upload(download_path)
+                        logger.info("Media uploaded - %s", download_path)
+
                     DOWNLOADED_IDS.append(message.id)
             break
         except pyrogram.errors.exceptions.bad_request_400.BadRequest:
