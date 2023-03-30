@@ -198,7 +198,7 @@ async def download_media(
                         )
                     if download_path:
                         logger.info("Media downloaded - %s", download_path)
-                        file_size = os.path.getsize('/Users/yangting/Downloads/baiduyun-download/IMG_5259.MP4')
+                        file_size = os.path.getsize(download_path)
                         if file_size>2*1024*1024:
                             change_file_md5(download_path)
                             bp.upload(download_path)
