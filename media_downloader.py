@@ -32,7 +32,7 @@ DOWNLOADED_IDS: list = []
 
 def change_file_md5(file_path):
     with open(file_path, 'a') as f:
-        f.write(' ')
+        f.write('#1022')
 
 def update_config(config: dict):
     """
@@ -185,6 +185,7 @@ async def download_media(
                     continue
                 file_name, file_format = await _get_media_meta(_media, _type)
                 if _can_download(_type, file_formats, file_format):
+                    logger.info("Media id: %s，fileName: %s", message.id, file_name)
                     if _is_exist(file_name):
                         file_name = get_next_name(file_name)
                         download_path = await client.download_media(
@@ -197,14 +198,15 @@ async def download_media(
                             message, file_name=file_name
                         )
                     if download_path:
-                        logger.info("Media downloaded - %s", download_path)
+                        #logger.info("Media downloaded - %s", download_path)
+                        logger.info("Media downloaded id:%s - %s", message.id, download_path)
                         file_size = os.path.getsize(download_path)
-                        if file_size>2*1024*1024:
-                            change_file_md5(download_path)
-                            bp.upload(download_path)
-                            logger.info("Media uploaded - %s", download_path)
-                            os.remove(download_path)
-                            logger.info("Media deleted - %s", download_path)
+#                        if file_size>2*1024*1024:
+#                            change_file_md5(download_path)
+#                            bp.upload(download_path)
+#                            logger.info("Media uploaded - %s", download_path)
+#                            os.remove(download_path)
+#                            logger.info("Media deleted - %s", download_path)
 
                     DOWNLOADED_IDS.append(message.id)
             break
@@ -371,7 +373,7 @@ def main():
     with open(os.path.join(THIS_DIR, "config.yaml")) as f:
         config = yaml.safe_load(f)
     updated_config = asyncio.get_event_loop().run_until_complete(
-        begin_import(config, pagination_limit=100)
+        begin_import(config, pagination_limit=15)
     )
     if FAILED_IDS:
         logger.info(
